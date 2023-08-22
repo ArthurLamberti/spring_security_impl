@@ -3,6 +3,7 @@ package com.springsecurity.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 public class Roles {
 

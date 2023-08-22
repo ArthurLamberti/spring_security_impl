@@ -38,6 +38,7 @@ public class SecurityConfig {
 
         return http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
@@ -58,7 +59,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(mvcMatcher("/auth")).authenticated()
-                        .requestMatchers(mvcMatcher("/public")).permitAll()
+                        .requestMatchers(mvcMatcher("/public"), mvcMatcher("/users")).permitAll()
                         .requestMatchers(mvcMatcher("/admin")).hasRole("ADMIN")
                         .requestMatchers(mvcMatcher("/manager")).hasRole("MANAGER")
                         .requestMatchers(mvcMatcher("/both")).hasAnyRole("ADMIN", "MANAGER")
@@ -69,7 +70,7 @@ public class SecurityConfig {
     }
 
     private RequestMatcher mvcMatcher(String pattern) {
-        return new MvcRequestMatcher(handlerMappingIntrospector,pattern);
+        return new MvcRequestMatcher(handlerMappingIntrospector, pattern);
     }
 
     @Bean
